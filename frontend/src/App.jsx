@@ -11,9 +11,11 @@ import { SettingsPage } from "./pages/settings-page";
 import { SignupPage } from "./pages/signup-page";
 
 import { useAuthStore } from "./store/use-auth-store";
+import { useThemeStore } from "./store/use-theme-store";
 
 function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
+  const {theme} = useThemeStore();
 
   useEffect(() => {
     checkAuth();
@@ -30,7 +32,7 @@ function App() {
   }
 
   return (
-    <div>
+    <div data-theme={theme}>
       <Navbar />
 
       <Routes>
