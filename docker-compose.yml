@@ -1,0 +1,50 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      
+    container_name: chat_backend
+
+    ports:
+      - "5000:5000"
+    
+    environment:
+      - PORT=5000
+      - MONGODB_URI=mongodb://ajaysinghteotia3_db_user:zlByMcj0lAHIlMxn@ac-wxvx1xc-shard-00-00.uvnjail.mongodb.net:27017,ac-wxvx1xc-shard-00-01.uvnjail.mongodb.net:27017,ac-wxvx1xc-shard-00-02.uvnjail.mongodb.net:27017/chat_db?ssl=true&replicaSet=atlas-12ifaa-shard-0&authSource=admin&appName=Cluster0
+      - JWT_SECRET=W4qdMLF4D5bJehf1tdwt5XOL7EgR81k9
+      - NODE_ENV=development
+      - CLOUDINARY_CLOUD_NAME=do58wty4y
+      - CLOUDINARY_API_KEY=893589613943171
+      - CLOUDINARY_API_SECRET=1O-PL8bVa0XHD2U7yt92V61CwvQ
+
+    restart: always
+
+    networks:
+      - chat-network
+
+  frontend:
+    build:
+      context: ./frontend
+    
+    container_name: chat_frontend
+
+    ports:
+      - "5173:5173"
+
+    environment:
+      - NODE=development
+      - VITE_API_URL=http://localhost:5000
+
+    depends_on:
+      - backend
+
+    restart: always
+
+    networks:
+      - chat-network
+
+networks:
+  chat-network:
+    driver: bridge
